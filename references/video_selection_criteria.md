@@ -2,281 +2,426 @@
 
 ## 一、这个文件的作用
 
-这个文件用于定义：  
+这个文件用于定义：
 在 YouTube 平台上，什么样的英文 AI 视频，值得进入后续的中文学习沉淀和中文内容改写流程。
 
 它不是为了找“最火的视频”，而是为了找：
 
-**既有学习价值、实操价值和落地价值，又有一定互动验证，并且适合转化为中文知识资产和中文内容的视频。**
+**既有学习价值、实操价值和落地价值，又有一定互动验证，并且在需要时符合新鲜度要求、适合转化为中文知识资产和中文内容的视频。**
 
 ---
 
 ## 二、总筛选原则
 
-一个视频是否值得保留，至少看三件事：
+一个视频是否值得保留，至少看四件事：
 
-1. 学习价值高不高  
-2. 实操和落地价值够不够  
-3. 是否适合转成中文学习成果或中文平台内容  
+1. 是否符合主题范围
+2. 学习价值高不高
+3. 实操和落地价值够不够
+4. 是否满足当前 freshness_mode 对应的新鲜度要求
 
 互动数据重要，但不是第一判断条件。
 
-本 skill 的优先顺序是：
-
-1. 学习价值  
-2. 实操落地  
-3. 互动验证  
-4. 发文适配  
+本 skill 的优先顺序应支持按模式切换，而不是固定不变。
 
 ---
 
-## 三、优先保留的视频类型
+## 三、新鲜度模式说明
 
-### 1. AI Agent 开发类
-例如：
-- AI Agent development tutorial
-- LLM agent from scratch
-- Multi-agent system design
-- AI agent tool calling tutorial
-- Agentic workflow development
+## 1. classic
 
-这类视频优先级最高，因为通常更适合学习和迁移。
+适合：
 
----
+* 补基础
+* 学方法
+* 学框架
+* 学经典 workflow
 
-### 2. Workflow / Automation 类
-例如：
-- AI workflow automation tutorial
-- LLM workflow design best practices
-- AI task orchestration
-- Build AI pipeline for automation
+判断逻辑：
 
-这类视频通常有流程、有结构，也很适合后续拆成 skill 或 workflow。
+* 不强制限制发布时间
+* 可接受 2024、2025 甚至更早但仍有高学习价值的内容
+* 新鲜度只作为补充参考，不作为主筛选条件
 
----
+## 2. recent
 
-### 3. 实战项目类
-例如：
-- Build AI agent to automate work
-- Create custom AI agent with LangChain
-- AI assistant for YouTube summarization
+适合：
 
-这类视频的优势是：更容易学到“怎么做”，而不只是“知道是什么”。
+* 跟最近 30 天动态
+* 看最新 AI Agent 变化
+* 关注当月工具、框架和最佳实践更新
 
----
+判断逻辑：
 
-### 4. LLM 高级用法类
-例如：
-- Structured output with LLMs
-- Claude system prompt design
-- ChatGPT advanced prompt engineering
-- Gemini advanced reasoning techniques
+* 优先最近 `recency_window_days` 天内发布的视频
+* 超过时间窗口的视频默认降权
+* 超过 90 天的视频默认不进入主结果
 
-这类视频适合作为第二优先级内容，帮助补方法和理解。
+## 3. hybrid
 
----
+适合：
 
-### 5. 提示词方法论类
-例如：
-- Prompt engineering for AI agents
-- Zero-shot / few-shot prompting mastery
-- Reflection prompts
-- Consistency prompt framework
+* 既想跟新内容
+* 又不想错过经典高质量内容
 
-这类视频更适合提炼方法和框架。
+判断逻辑：
+
+* 先输出最近时间窗口内最值得学的内容
+* 再补少量经典内容，单独标记为“经典补充”
+* 经典内容不能混排到主结果最前面
 
 ---
 
-## 四、优先淘汰的视频类型
+## 四、高优先级视频的特征
+
+### 1. 主题匹配明确
+
+视频必须落在主题白名单内，例如：
+
+* AI Agent
+* Workflow / Automation
+* Tool calling
+* Multi-agent
+* LangGraph / LangChain
+* Structured output
+* Prompt engineering
+* LLM 高级用法
+* AI 实战项目
+
+### 2. 有明确学习价值
+
+优先保留符合这些特征的视频：
+
+* 有明确问题
+* 有步骤
+* 有结构
+* 有实操演示
+* 有可迁移的方法
+* 有项目或案例
+
+### 3. 有实操和落地价值
+
+优先保留：
+
+* tutorial
+* step by step
+* from scratch
+* implementation
+* workflow
+* project
+* practical
+* real use case
+
+### 4. 在 recent / hybrid 模式下满足新鲜度要求
+
+如果任务要求跟近况，视频必须：
+
+* 尽量在最近 `recency_window_days` 天内
+* 至少不要明显过期
+* 不要优先把老视频顶到前面
+
+---
+
+## 五、低优先级或直接淘汰的视频类型
 
 以下内容默认优先级较低，必要时可直接淘汰：
 
 ### 1. 纯热点评论
+
 只有观点，没有方法，没有结构。
 
 ### 2. 纯工具盘点
+
 例如：
-- Top 10 AI tools
-- Best AI tools this week
+
+* Top 10 AI tools
+* Best AI tools this week
 
 这类内容适合补充发文素材，但不适合优先学习。
 
 ### 3. 纯概念科普
+
 如果只是解释“什么是 AI Agent”，但没有流程、步骤和案例，优先级较低。
 
 ### 4. 结果展示型视频
+
 只展示最终效果，不讲过程，不讲逻辑，不讲怎么做。
 
 ### 5. 娱乐表达强于信息表达的视频
+
 如果视频严重依赖镜头表现、表演感、情绪渲染，而不是信息本身，也不适合作为优先学习内容。
+
+### 6. 在 recent 模式下明显过期的视频
+
+即使内容本身不错，但如果发布时间明显超出时间窗口，也不应排在主结果前面。
 
 ---
 
-## 五、学习价值判断标准
+## 六、学习价值判断标准
 
 优先保留符合以下特点的视频：
 
 ### 1. 有明确问题
+
 不是泛泛而谈，而是在解决一个具体问题。
 
 ### 2. 有步骤
+
 能看出“先做什么、再做什么”。
 
 ### 3. 有结构
+
 能提炼成框架、模块或流程。
 
 ### 4. 有实操演示
+
 最好有工具调用、项目过程、workflow 演示或系统搭建。
 
 ### 5. 有迁移价值
+
 看完之后，能迁移到自己的项目、工作流或 skill 设计中。
 
 ---
 
-## 六、实操和落地价值判断标准
+## 七、实操和落地价值判断标准
 
 优先保留这些属性明显的视频：
 
-- tutorial
-- step by step
-- from scratch
-- implementation
-- build
-- workflow
-- project
-- practical
-- real use case
+* tutorial
+* step by step
+* from scratch
+* implementation
+* build
+* workflow
+* project
+* practical
+* real use case
 
 如果一个视频只是讲概念，没有执行路径，它就不属于高优先级内容。
 
 ---
 
-## 七、互动验证标准
+## 八、互动验证标准
 
-互动指标是加分项，不是先决条件。  
+互动指标是加分项，不是先决条件。
 可以优先参考：
 
-- views
-- likes
-- comments
-- 点赞率
-- 评论率
-- 发布时间
+* views
+* likes
+* comments
+* 点赞率
+* 评论率
+* 发布时间
 
 ### 推荐判断方式
-不要只看播放量。  
+
+不要只看播放量。
 更合理的是综合判断：
 
-- 这个视频是不是相对受欢迎
-- 这个视频是不是互动质量不错
-- 评论区有没有真实讨论
-- 发布时间较短时，互动率是否仍然高
+* 这个视频是不是相对受欢迎
+* 这个视频是不是互动质量不错
+* 评论区有没有真实讨论
+* 发布时间较短时，互动率是否仍然高
 
 ---
 
-## 八、推荐评分维度
+## 九、新鲜度判断标准
+
+这是新增的重要维度。
+
+### 当 freshness_mode = classic
+
+* 记录发布时间
+* 识别时效性风险
+* 但不强制按时间淘汰
+
+### 当 freshness_mode = recent
+
+必须重点判断：
+
+* 是否在最近 `recency_window_days` 天内
+* 是否属于当前阶段较新的内容
+* 是否明显讲旧版本框架、旧工具、旧模型用法
+
+### 当 freshness_mode = hybrid
+
+必须区分两类：
+
+#### A. 最近时间窗口内内容
+
+作为主结果优先展示
+
+#### B. 时间窗口外但仍有价值的内容
+
+单独展示为“经典补充”
+
+---
+
+## 十、推荐评分维度
 
 建议筛选时至少从以下维度判断：
 
 ### 1. Theme Fit
+
 是否符合主题白名单
 
 ### 2. Learning Value
+
 是否值得学
 
 ### 3. Practical Value
+
 是否值得动手试
 
 ### 4. Reusability
+
 是否适合迁移到自己的项目、skill 或 workflow
 
 ### 5. Engagement
+
 是否有一定互动验证
 
-### 6. Publishing Fit
+### 6. Freshness
+
+是否满足当前时间窗口要求
+
+### 7. Publishing Fit
+
 是否适合后续写成公众号 / 小红书 / 学习笔记
 
 ---
 
-## 九、推荐优先级分层
+## 十一、推荐优先级分层
 
 ### S 级：强烈优先
-- 学习价值强
-- 实操价值强
-- 有结构
-- 有步骤
-- 可迁移
-- 可复用
-- 适合沉淀
+
+* 学习价值强
+* 实操价值强
+* 有结构
+* 有步骤
+* 可迁移
+* 可复用
+* 在 recent / hybrid 模式下也满足新鲜度要求
 
 ### A 级：优先处理
-- 方法和结构不错
-- 有一定实操价值
-- 值得看、值得记、值得整理
+
+* 方法和结构不错
+* 有一定实操价值
+* 值得看、值得记、值得整理
 
 ### B 级：可补充
-- 有启发
-- 有部分可用信息
-- 更适合作为补充学习素材
+
+* 有启发
+* 有部分可用信息
+* 更适合作为补充学习素材
 
 ### C 级：低优先
-- 发文价值可能有
-- 学习价值一般
-- 适合做边缘素材
+
+* 发文价值可能有
+* 学习价值一般
+* 适合做边缘素材
 
 ### D 级：淘汰
-- 热闹大于方法
-- 盘点大于结构
-- 观点大于执行
-- 不值得投入时间
+
+* 热闹大于方法
+* 盘点大于结构
+* 观点大于执行
+* 不值得投入时间
+* 在 recent 模式下明显过期
 
 ---
 
-## 十、推荐输出字段
+## 十二、模式化筛选建议
 
-每次筛选后，建议输出以下内容：
+### 当 freshness_mode = classic
 
-- 视频标题
-- 链接
-- 频道
-- 发布时间
-- 时长
-- views
-- likes
-- comments
-- 主题判断
-- learning_priority
-- learning_reason
-- practical_takeaways
-- reusable_method
-- publishing_fit
-- 结论：入选 / 备选 / 淘汰
-- 理由
+排序逻辑建议为：
+学习价值 > 实操价值 > 可迁移性 > 发文适配 > 互动 > 新鲜度
+
+### 当 freshness_mode = recent
+
+排序逻辑建议为：
+新鲜度 > 学习价值 > 实操价值 > 可迁移性 > 发文适配 > 互动
+
+### 当 freshness_mode = hybrid
+
+先按 recent 逻辑选出主结果，
+再用 classic 逻辑补 1-2 条经典高质量内容。
 
 ---
 
-## 十一、平台适配建议
+## 十三、推荐输出字段
 
-### 更适合学习笔记
-- 学习价值高
-- 发文价值一般
-- 适合自己消化
+在筛选视频时，建议增加以下字段：
 
-### 更适合公众号
-- 结构完整
-- 逻辑清晰
-- 可展开解释
-- 有一定方法密度
-
-### 更适合小红书
-- 观点更集中
-- 重点更少更明确
-- 容易整理成 3-5 个点
+* `learning_priority`
+* `learning_reason`
+* `practical_takeaways`
+* `reusable_method`
+* `migration_note`
+* `freshness_mode`
+* `recency_window_days`
+* `within_recency_window`：true / false
+* `is_classic_supplement`：true / false
+* `freshness_note`
 
 ---
 
-## 十二、最终提醒
+## 十四、推荐输出格式
 
-筛选的重点不是“哪个视频最火”，而是：
+### classic 模式
 
-**哪个英文视频最值得先学，最值得再做，最后才最值得转成中文内容。**
+输出：
+
+* 入选视频
+* 备选视频
+* 淘汰视频
+* 理由
+
+### recent 模式
+
+输出：
+
+#### 最近 `recency_window_days` 天最值得学的内容
+
+* 标题
+* 日期
+* learning_priority
+* 为什么值得学
+
+#### 经典补充（可选）
+
+* 标题
+* 日期
+* 为什么虽然旧但仍然值得补
+
+### hybrid 模式
+
+输出：
+
+#### A. 最近时间窗口内最值得学的内容
+
+#### B. 经典补充内容
+
+---
+
+## 十五、与发文价值的关系
+
+学习价值高，不一定发文价值高。
+发文价值高，也不一定学习价值高。
+
+新鲜度高，也不一定值得学。
+但在 `recent` 模式下，新鲜度不足的内容不应排在主结果前面。
+
+本 skill 的原则是：
+
+**先满足模式对应的新鲜度规则，再判断学习价值和发文价值。**
+
+---
+
+## 十六、最终提醒
+
+真正值得优先处理的视频，不一定是最热的。
+在 classic 模式下，要找最值得学的；
+在 recent 模式下，要找最近时间窗口内最值得学的；
+在 hybrid 模式下，要把“最近值得学的”和“经典补充内容”明确分开。
