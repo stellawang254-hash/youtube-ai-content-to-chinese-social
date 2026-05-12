@@ -132,3 +132,11 @@ If the user asks for publishing only, that override is allowed.
 ### 10. If unclear, ask or inspect before rewriting architecture
 Do not silently flatten or replace the repository structure.
 Prefer adding compatible layers.
+
+### 11. Optional: Use with Hermes Agent
+This repo can also be loaded as a Hermes Agent skill. When running in Hermes:
+- The `youtube-content` built-in skill handles Step 3 (transcript extraction) via `youtube-transcript-api`
+- The 4 sub-skills merge into a single 7-step workflow
+- The skill auto-triggers when users mention "YouTube" + "Chinese content" or similar keywords
+
+The Hermes version is maintained separately at `~/.hermes/skills/creative/youtube-ai-content-to-chinese-social/` and is a compatible reinterpretation — not a replacement — of this repository's architecture.
